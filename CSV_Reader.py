@@ -7,6 +7,7 @@ Training on Algorithmic Trading
 import datetime as dt
 import pandas as pd
 
+import Parameters as par
 
 import SMA_Calculator  as sma
 import ATR_Calculator  as atr
@@ -37,7 +38,7 @@ class CSV_Reader:
         
     def AddIndicatorValuesToCSV(self):
 
-        self.Data['SMA20'] = self.SMA_Calculator.CalculateSMA(self.Data['Close'], 5)
+        self.Data['SMA20'] = self.SMA_Calculator.CalculateSMA(self.Data['Close'], par.SMA_Window) #window mittelwert über n=5 tage
         self.Data['ATR'] = self.ATR_Calculator.CalculateATR(self.Data.index, self.Data['High'],
                         self.Data['Low'], self.Data['Close'], 14)
         
