@@ -7,7 +7,7 @@ Training on Algorithmic Trading
 import numpy          as np
 import TXT_Reader     as tr
 import EMA_Calculator as ema
-import Parameters     as par
+
 
 class ATR_Calculator:
 
@@ -29,13 +29,14 @@ class ATR_Calculator:
         
         
         
-    def CalculateATR(self, _Data):
+    def CalculateATR(self, _Dates, _HighestPrices, _LowestPrices, _ClosingPrices,
+                            _window):
     
-        self.Dates           = _Data.index  
-        self.HighestPrices   = _Data['High']
-        self.LowestPrices    = _Data['Low']
-        self.ClosingPrices   = _Data['Close']
-        self.Window          = par.ATR_Window
+        self.Dates           = _Dates                   
+        self.HighestPrices   = _HighestPrices
+        self.LowestPrices    = _LowestPrices
+        self.ClosingPrices   = _ClosingPrices
+        self.Window          = _window
         
         
         self.CreateDateAndTrueRangeArrays()

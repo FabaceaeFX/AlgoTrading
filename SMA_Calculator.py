@@ -6,8 +6,6 @@ Training on Algorithmic Trading
 
 import numpy as np
 
-import Parameters as par
-
 
 class SMA_Calculator():
 
@@ -15,10 +13,10 @@ class SMA_Calculator():
         
             pass
             
-    def CalculateSMA(self, _Data):
+    def CalculateSMA(self, _closingPriceValues, _window):
     
-        Weights = self.CalculateWeights(par.SMA_Window)
-        SMAValues = self.CalculateSMAValues(Weights, _Data['Close'])
+        Weights = self.CalculateWeights(_window)
+        SMAValues = self.CalculateSMAValues(Weights, _closingPriceValues)
         
         return(SMAValues)
         

@@ -86,8 +86,8 @@ class IndicatorTester:
             self.Wins += Win
             self.Losses += Loss
             
-            #print('Day:', self.Data[day,0], self.TradeOrder,'Adj Close',self.Data[day, 6], 'StopLoss', self.StopLoss, 'TakeProfit', 
-             #          self.TakeProfit, 'ATRValue', self.Data[day,8])
+            print('Day:', self.Data[day,0], self.TradeOrder,'Adj Close',self.Data[day, 6], 'StopLoss', self.StopLoss, 'TakeProfit', 
+                       self.TakeProfit, 'ATRValue', self.Data[day,8])
             
         print('TOTAL WINS:', self.Wins, 'TOTAL LOSSES', self.Losses, 'WIN TO LOSS RATIO:', self.Wins/self.Losses)
         

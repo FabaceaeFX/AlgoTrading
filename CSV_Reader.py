@@ -12,8 +12,6 @@ import SMA_Calculator  as sma
 import ATR_Calculator  as atr
 import EMA_Calculator  as ema
 
-import Parameters       as par
-
 
 class CSV_Reader:
 
@@ -26,9 +24,9 @@ class CSV_Reader:
         
 
         
-    def ReadCSVFile(self):
+    def ReadCSVFile(self, _FileName):
     
-        self.getCSV_File(par.FileName)
+        self.getCSV_File(_FileName)
         self.AddIndicatorValuesToCSV()
      
         return(self.Data)
@@ -39,7 +37,7 @@ class CSV_Reader:
         
     def AddIndicatorValuesToCSV(self):
 
-        self.Data['SMA20'] = self.SMA_Calculator.CalculateSMA(self.Data['Close'], 20)
+        self.Data['SMA20'] = self.SMA_Calculator.CalculateSMA(self.Data['Close'], 5)
         self.Data['ATR'] = self.ATR_Calculator.CalculateATR(self.Data.index, self.Data['High'],
                         self.Data['Low'], self.Data['Close'], 14)
         
