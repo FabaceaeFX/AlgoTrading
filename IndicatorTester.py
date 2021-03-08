@@ -49,8 +49,8 @@ class IndicatorTester:
     def LoopOverTradingDays(self):
     
         
-        Datas = self.CSV_Reader.ReadCSVFile('tsla.csv')
-        self.Data = Datas.to_numpy()
+        PandaData = self.CSV_Reader.ReadCSVFile('tsla.csv')
+        self.Data = PandaData.to_numpy()
         
 
        
@@ -66,30 +66,34 @@ class IndicatorTester:
             
             if self.TradeOrder == 'buy':
             
-                self.putStopLossAndTakeProfit(self.Data[day,6],
+                self.putStopLossAndTakeProfit(self.Data[day,5],
                                               self.TradeOrder, 
-                                              self.Data[day,8])
+                                              self.Data[day,7])
             
                 self.CurrentTrade = 'bought'
                 
             if self.TradeOrder == 'sell':
             
-                self.putStopLossAndTakeProfit(self.Data[day,6],
+                self.putStopLossAndTakeProfit(self.Data[day,5],
                                               self.TradeOrder, 
-                                              self.Data[day,8])
+                                              self.Data[day,7])
                 self.CurrentTrade = 'sold'
             
             else:
                 pass
                 
-            Win,Loss=self.WinOrLossArbiter.ArbitIfWinOrLoss(self.Data[day,6],self.CurrentTrade,self.StopLoss,self.TakeProfit)
+            Win,Loss=self.WinOrLossArbiter.ArbitIfWinOrLoss(self.Data[day,5],self.CurrentTrade,self.StopLoss,self.TakeProfit)
             self.Wins += Win
             self.Losses += Loss
             
-            print('Day:', self.Data[day,0], self.TradeOrder,'Adj Close',self.Data[day, 6], 'StopLoss', self.StopLoss, 'TakeProfit', 
-                       self.TakeProfit, 'ATRValue', self.Data[day,8])
+            print( self.TradeOrder,'Adj Close',self.Data[day, 5], 'StopLoss', self.StopLoss, 'TakeProfit', 
+                       self.TakeProfit, 'ATRValue', self.Data[day,7])
+                       
+                
             
         print('TOTAL WINS:', self.Wins, 'TOTAL LOSSES', self.Losses, 'WIN TO LOSS RATIO:', self.Wins/self.Losses)
+        
+        self.DataVisualizer.visualizeData(PandaData)
         
        # self.DataVisualizer.PlotData(self.Data)
                 

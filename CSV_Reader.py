@@ -34,7 +34,7 @@ class CSV_Reader:
     
     def getCSV_File(self, _FileName):
     
-        self.Data = pd.read_csv(_FileName, parse_dates=True)
+        self.Data = pd.read_csv(_FileName, parse_dates=True,  index_col=0)
         
     def AddIndicatorValuesToCSV(self):
 
