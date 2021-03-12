@@ -9,26 +9,24 @@ class PriceLineCrossover:
 
     def __init__(self):
     
-        self.TradeOrder = None
+        TradeOrder = None
         
     
     def getTradeOrder(self, _previousClosingValue, _currentClosingValue, _prevIndicatorValue, _IndicatorValue):
     
-        self.TradeOrder = None
+        TradeOrder = None
     
         if _previousClosingValue > _prevIndicatorValue:
             if _currentClosingValue < _IndicatorValue:
-                print('Ich sollte jetzt verkaufen')
-                self.TradeOrder = 'sell'
+                TradeOrder = 'sell'
                 
       
         
         if _previousClosingValue < _prevIndicatorValue:
             if _currentClosingValue > _IndicatorValue:
-                print('Hier sollte ich kaufen')
-                self.TradeOrder = 'buy'
+                TradeOrder = 'buy'
         
-        return (self.TradeOrder)
+        return (TradeOrder)
          
 if __name__ == '__main__':
 
