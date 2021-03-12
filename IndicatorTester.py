@@ -36,8 +36,8 @@ class IndicatorTester:
         self.LastDay              = par.LastDay
         
         self.TradeOrder           = None
-        self.CurrentTrade         = None
         
+    
         self.StopLoss             = None
         self.TakeProfit           = None
         
@@ -51,6 +51,7 @@ class IndicatorTester:
         
         PandaData = self.CSV_Reader.ReadCSVFile('tsla.csv')
         self.Data = PandaData.to_numpy()
+
         
 
        
@@ -58,9 +59,10 @@ class IndicatorTester:
         for day in range (self.StartingDay, self.LastDay):
         
 
-            
-            self.TradeOrder = self.TradeOrderManager.getTradeOrder(self.Data[day,:],
-                             self.CurrentTrade)
+            print(day)
+
+            self.TradeOrder = self.TradeOrderManager.getTradeOrder(self.Data[day-1,:], self.Data[day,:])
+           # print(self.TradeOrder)
                              
             
             
@@ -70,24 +72,34 @@ class IndicatorTester:
                                               self.TradeOrder, 
                                               self.Data[day,7])
             
-                self.CurrentTrade = 'bought'
                 
             if self.TradeOrder == 'sell':
             
                 self.putStopLossAndTakeProfit(self.Data[day,5],
-                                              self.TradeOrder, 
+                                              self.TradeOrder,
                                               self.Data[day,7])
-                self.CurrentTrade = 'sold'
+
             
             else:
                 pass
                 
-            Win,Loss=self.WinOrLossArbiter.ArbitIfWinOrLoss(self.Data[day,5],self.CurrentTrade,self.StopLoss,self.TakeProfit)
+            Win,Loss=self.WinOrLossArbiter.ArbitIfWinOrLoss(self.Data[day-1,5],self.Data[day,5],self.StopLoss,self.TakeProfit)
+            
+            if Win:
+            
+                self.TakeProfit = None
+                self.StopLoss   = None
+                
+            if Loss:
+            
+                self.TakeProfit = None
+                self.StopLoss   = None
+            
             self.Wins += Win
             self.Losses += Loss
             
-            print( self.TradeOrder,'Adj Close',self.Data[day, 5], 'StopLoss', self.StopLoss, 'TakeProfit', 
-                       self.TakeProfit, 'ATRValue', self.Data[day,7])
+          #  print( self.TradeOrder,'Adj Close',self.Data[day, 5], 'StopLoss', self.StopLoss, 'TakeProfit', 
+                    #   self.TakeProfit, 'ATRValue', self.Data[day,7])
                        
                 
             

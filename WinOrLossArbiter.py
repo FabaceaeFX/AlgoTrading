@@ -13,33 +13,46 @@ class WinOrLossArbiter:
         pass
 
 
-    def ArbitIfWinOrLoss(self, _CurrentClosingPrice, _CurrentTrade,
-                                   _StopLoss, _TakeProfit):
+    def ArbitIfWinOrLoss(self, _previousClosingPrice, _currentClosingPrice, _StopLoss, _TakeProfit):
                                    
         Win  = 0
         Loss = 0
-    
-        if _CurrentTrade == 'bought':
-            
-            if _CurrentClosingPrice >= _TakeProfit:
-            
-                Win = 1
-
-            if _CurrentClosingPrice <= _StopLoss:
-            
-                Loss = 1
-
-
-        if _CurrentTrade == 'sold':
-            
-            if _CurrentClosingPrice <= _TakeProfit:
-            
-                Win = 1
-
-            if _CurrentClosingPrice >= _StopLoss:
-            
-                Loss = 1
+        
+        
+        if _StopLoss == None:
+            if _TakeProfit == None:
+                pass
                 
+        else:
+
+    
+            if _previousClosingPrice < _TakeProfit:
+                
+                if _currentClosingPrice > _TakeProfit:
+                
+                    Win = 1
+
+            if _previousClosingPrice > _TakeProfit:
+            
+                if _currentClosingPrice < _TakeProfit:
+               
+                    Win = 1
+
+
+           
+            if _previousClosingPrice < _StopLoss:
+                
+                if _currentClosingPrice > _StopLoss:
+                
+                    Loss = 1
+
+            if _previousClosingPrice > _StopLoss:
+            
+                if _currentClosingPrice < _StopLoss:
+               
+                    Loss = 1
+                
+       
         return(Win, Loss)
 
        
