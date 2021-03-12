@@ -1,0 +1,29 @@
+>>> import pandas as pds
+>>> data = [(1,2,3),(4,5,6),(7,8,9)];
+>>> dataFrame = pds.DataFrame(data, index=("R1", "R2", "R3"), columns=("C1", "C2", "C3"));
+>>> print(dataFrame);
+    C1  C2  C3
+R1   1   2   3
+R2   4   5   6
+R3   7   8   9
+>>> dictionaryObject = dataFrame.to_dict();
+>>> print(dictionaryObject);
+{'C1': {'R1': 1, 'R2': 4, 'R3': 7}, 'C2': {'R1': 2, 'R2': 5, 'R3': 8}, 'C3': {'R1': 3, 'R2': 6, 'R3': 9}}
+>>> print(dictionaryObject[C1]);
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'C1' is not defined
+>>> print(dictionaryObject(C1));
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'C1' is not defined
+>>> print(dictionaryObject['C1']);
+{'R1': 1, 'R2': 4, 'R3': 7}
+>>> print(dictionaryObject['C1']['R2']);
+4
+>>> mayDay = dictionaryObject['C2'];
+>>> mayDay
+{'R1': 2, 'R2': 5, 'R3': 8}
+>>> mayDay['R2']
+5
+
