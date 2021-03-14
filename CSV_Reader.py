@@ -38,9 +38,9 @@ class CSV_Reader:
         
     def AddIndicatorValuesToCSV(self):
 
-        self.Data['SMA20'] = self.SMA_Calculator.CalculateSMA(self.Data['Close'], par.SMA_Window) #window mittelwert über n=5 tage
+        self.Data['SMA20'] = self.SMA_Calculator.CalculateSMA(self.Data['Close']) #window mittelwert über n=5 tage
         self.Data['ATR'] = self.ATR_Calculator.CalculateATR(self.Data.index, self.Data['High'],
-                        self.Data['Low'], self.Data['Close'], 14)
+                        self.Data['Low'], self.Data['Close'])
         
 
         
