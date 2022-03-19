@@ -23,26 +23,20 @@ class IndicatorTester:
     def __init__(self, _MoneyManager, _CSV_Reader, _Parameters, _TradeOrderManager,
                         _WinOrLossArbiter, _Data_Visualizer):
     
-      #  self.WinsAndLossesCounter = _WinsAndLossesCounter
+    
         self.MoneyManager         = _MoneyManager
         self.CSV_Reader           = _CSV_Reader
         self.TradeOrderManager    = _TradeOrderManager
         self.WinOrLossArbiter     = _WinOrLossArbiter
         self.DataVisualizer       = _Data_Visualizer
-        
-        self.Data                 = None
-        
-        self.StartingDay          = par.StartingDay
-        self.LastDay              = par.LastDay
-        
-        self.TradeOrder           = None
-        
+       
+        self.tradeOrder           = None
     
-        self.StopLoss             = None
-        self.TakeProfit           = None
+        self.stopLoss             = None
+        self.takeProfit           = None
         
-        self.Wins                 = 0
-        self.Losses               = 0
+        self.totalWins            = 0
+        self.totalLosses          = 0
         
      
         
@@ -50,76 +44,51 @@ class IndicatorTester:
     
         
         PandaData = self.CSV_Reader.ReadCSVFile('tsla.csv')
-        self.Data = PandaData.to_numpy()
-
-        
-
+        Data = PandaData.to_numpy()
        
     
-        for day in range (self.StartingDay, self.LastDay):
-        
+        for day in range (par.startingDay, par.lastDay):
+            self.tradeOrder = self.TradeOrderManager.getTradeOrder(Data[day-1,:], Data[day,:])  
+            self.checkForStopLossAndTakeProfit(day, Data)
+            win,loss =  self.WinOrLossArbiter.checkIfWinOrLoss(Data[day-1,5], Data[day,5], self.stopLoss, self.takeProfit)
+            self.updateTotalWinsAndLosses(win, loss)
+            
+            print(self.totalWins, self.totalLosses)
 
-            print(day)
-
-            self.TradeOrder = self.TradeOrderManager.getTradeOrder(self.Data[day-1,:], self.Data[day,:])
-           # print(self.TradeOrder)
-                             
-            
-            
-            if self.TradeOrder == 'buy':
-            
-                self.putStopLossAndTakeProfit(self.Data[day,5],
-                                              self.TradeOrder, 
-                                              self.Data[day,7])
-            
-                
-            if self.TradeOrder == 'sell':
-            
-                self.putStopLossAndTakeProfit(self.Data[day,5],
-                                              self.TradeOrder,
-                                              self.Data[day,7])
-
-            
-            else:
-                pass
-                
-            Win,Loss=self.WinOrLossArbiter.ArbitIfWinOrLoss(self.Data[day-1,5],self.Data[day,5],self.StopLoss,self.TakeProfit)
-            
-            if Win:
-            
-                self.TakeProfit = None
-                self.StopLoss   = None
-                
-            if Loss:
-            
-                self.TakeProfit = None
-                self.StopLoss   = None
-            
-            self.Wins += Win
-            self.Losses += Loss
-            
-          #  print( self.TradeOrder,'Adj Close',self.Data[day, 5], 'StopLoss', self.StopLoss, 'TakeProfit', 
-                    #   self.TakeProfit, 'ATRValue', self.Data[day,7])
-                       
                 
             
-        print('TOTAL WINS:', self.Wins, 'TOTAL LOSSES', self.Losses, 'WIN TO LOSS RATIO:', self.Wins/self.Losses)
+        print('TOTAL WINS:', self.totalWins, 'TOTAL LOSSES', self.totalLosses, 'WIN TO LOSS RATIO:')
         
         self.DataVisualizer.visualizeData(PandaData)
+            
+            
+            
+            
+   
+    def checkForStopLossAndTakeProfit(self, _day, _data):
+            
+        if self.tradeOrder != None:                   
+            self.stopLoss, self.takeProfit = self.MoneyManager.getStopLossAndTakeProfit(_data[_day,5],
+                                                                self.tradeOrder, _data[_day,7])            
+        else:
+            pass
+            
+            
+   
+    def updateTotalWinsAndLosses(self, _win, _loss):
+                
+        if _win or _loss:
         
-       # self.DataVisualizer.PlotData(self.Data)
+            self.takeProfit = None
+            self.stopLoss   = None
+            
+            self.totalWins += _win
+            self.totalLosses += _loss
+            
+            
+
                 
-           #print(Data)
-            #print('Day:', self.Data[day,0], TradeOrder,'Adj Close',self.Data[day, 4], 'StopLoss', self.StopLoss, 'TakeProfit', 
-                       # self.TakeProfit, 'ATRValue', self.Data[day,6])
-                
-        #print(self.Wins, self.Losses)
-                
-                
-                
-    def putStopLossAndTakeProfit(self, _closingPrice, _TradeOrder, _ATRValue ):
-      
-        self.StopLoss, self.TakeProfit = self.MoneyManager.PutStopLossAndTakeProfit(_closingPrice, _TradeOrder, _ATRValue)
+    
                
 
         
@@ -131,9 +100,9 @@ if __name__ == '__main__':
     
     mySMA_Calculator = sma.SMA_Calculator()
     myEMA_Calculator = ema.EMA_Calculator()
-    myATR_Calculator = atr.ATR_Calculator(myEMA_Calculator)
+    myATR_Calculator = atr.ATR_Calculator()
     myData_Visualizer = dv.Data_Visualizer()
-    myCSV_Reader = cr.CSV_Reader(mySMA_Calculator, myATR_Calculator)
+    myCSV_Reader = cr.CSV_Reader()
     myTradeOrderManager = tom.TradeOrderManager()
     myWinOrLossArbiter  = wla.WinOrLossArbiter()
     

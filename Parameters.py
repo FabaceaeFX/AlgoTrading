@@ -2,10 +2,10 @@ import numpy as np
 
 FileName = 'tsla.csv'
 
-StartingDay = 1
-LastDay = 1387
+startingDay = 1
+lastDay = 1387
 
-IndicatorType = 'PriceLineCrossover'
+indicatorType = 'PriceLineCrossover'
 
 ATR_Window = 14
 SMA_Window = 100

@@ -13,7 +13,7 @@ class WinOrLossArbiter:
         pass
 
 
-    def ArbitIfWinOrLoss(self, _previousClosingPrice, _currentClosingPrice, _StopLoss, _TakeProfit):
+    def checkIfWinOrLoss(self, _previousClosingPrice, _currentClosingPrice, _StopLoss, _TakeProfit):
                                    
         Win  = 0
         Loss = 0

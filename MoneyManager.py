@@ -13,7 +13,7 @@ class MoneyManager:
         pass
 
 
-    def PutStopLossAndTakeProfit(self, _CurrentClosingPrice, _TradeOrder, _ATRValue):
+    def getStopLossAndTakeProfit(self, _CurrentClosingPrice, _TradeOrder, _ATRValue):
 
         if _TradeOrder == 'buy':
             

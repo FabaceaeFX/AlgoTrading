@@ -11,85 +11,73 @@ import EMA_Calculator as ema
 
 class ATR_Calculator:
 
-    def __init__(self, _EMA_Calculator):
-    
-      
-        self.EMA_Calculator  = _EMA_Calculator
-        self.TrueRange       = None
-        self.TrueRangeDates  = []
-        self.TrueRanges      = []
-        self.ATR_Values      = []
-        
-        self.Dates           = []                    
-        self.HighestPrices   = [] 
-        self.LowestPrices    = []
-        self.ClosingPrices   = []
-        self.Window          = 0
+    def __init__(self):
 
+        pass
         
         
         
-    def CalculateATR(self, _Dates, _HighestPrices, _LowestPrices, _ClosingPrices,
+    def CalculateATR(self, _dates, _highestPrices, _lowestPrices, _closingPrices,
                             _window):
     
-        self.Dates           = _Dates                   
-        self.HighestPrices   = _HighestPrices
-        self.LowestPrices    = _LowestPrices
-        self.ClosingPrices   = _ClosingPrices
-        self.Window          = _window
+        self.highestPrices    = _highestPrices
+        self.lowestPrices     = _lowestPrices
+        self.closingPrices    = _closingPrices
         
         
-        self.CreateDateAndTrueRangeArrays()
-        self.ApplyEMAOnTrueRanges()
+        trueRanges            = self.createDateAndTrueRangeArrays(_dates)
+        ATRValues             = self.applyEMAOnTrueRanges(trueRanges, _window)
         
-        return(self.ATR_Values)
+        return(ATRValues)
         
         
         
-    def CreateDateAndTrueRangeArrays(self):
+    def createDateAndTrueRangeArrays(self, _dates):
         
-         index = 1
-         self.TrueRanges.append(0)
+         index                = 1
+         trueRanges           = np.zeros(len(_dates))
          
-         while index < len(self.Dates):
+         while index < len(_dates):
             
-            self.CalculateTrueRange(index)
-            self.TrueRanges.append(self.TrueRange)
+            trueRange         = self.calculateTrueRange(index)
+            trueRanges[index] = trueRange
             
             index += 1
          
+         return trueRanges
+         
           
-    def CalculateTrueRange(self, _index):
+    def calculateTrueRange(self, _index):
     
-        Range1 = self.HighestPrices[_index]-self.LowestPrices[_index]
-        Range2 = abs(self.HighestPrices[_index]-self.ClosingPrices[_index-1])
-        Range3 = abs(self.LowestPrices[_index]-self.ClosingPrices[_index-1])
+        Range1 = self.highestPrices[_index] - self.lowestPrices[_index]
+        Range2 = abs(self.highestPrices[_index] - self.closingPrices[_index-1])
+        Range3 = abs(self.lowestPrices[_index] - self.closingPrices[_index-1])
 
         if Range2 <= Range1 >= Range3:
 
-            self.TrueRange = Range1
+            trueRange = Range1
 
         elif Range1 <= Range2 >= Range3:
 
-            self.TrueRange = Range2
+            trueRange = Range2
 
         elif Range1 <= Range3 >= Range2:
 
-            self.TrueRange = Range3
+            trueRange = Range3
+            
+        return trueRange   
             
             
             
-    def ApplyEMAOnTrueRanges(self):
+    def applyEMAOnTrueRanges(self, _trueRanges, _window):
         
-        self.ATR_Values = self.EMA_Calculator.CalculateEMA(self.TrueRanges, 
-                                         self.Window, -1)
+        ATRValues = ema.EMA_Calculator().CalculateEMA(_trueRanges, 
+                                         _window, -1)
                                          
-                                         
-
-     
-if __name__ == '__main__':
-
-    myEMA_Calculator = ema.EMA_Calculator()
-    myATR_Calculator = ATR_Calculator(myEMA_Calculator)
-    myATR_Calculator.CalculateATR()
+        return ATRValues
+        
+        
+        
+        
+ 
             
