@@ -1,0 +1,1 @@
+https://pythontic.com/pandas/serialization/dictionary

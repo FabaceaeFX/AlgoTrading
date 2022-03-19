@@ -6,24 +6,25 @@ Training on Algorithmic Trading
 
 import numpy as np
 
+import Parameters as par
 
 class SMA_Calculator():
 
     def __init__(self):
-        
-            pass
+        self.window = par.SMA_Window
+
             
-    def CalculateSMA(self, _closingPriceValues, _window):
+    def CalculateSMA(self, _closingPriceValues):
     
-        Weights = self.CalculateWeights(_window)
+        Weights = self.CalculateWeights()
         SMAValues = self.CalculateSMAValues(Weights, _closingPriceValues)
         
         return(SMAValues)
         
         
-    def CalculateWeights(self, _window):
+    def CalculateWeights(self):
     
-        Weights = np.repeat(1, _window)/_window
+        Weights = np.repeat(1, self.window)/self.window
         
         return(Weights)
         

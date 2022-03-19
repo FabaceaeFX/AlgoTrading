@@ -5,13 +5,17 @@ Training on Algorithmic Trading
 '''
 
 import numpy          as np
+
+import Parameters     as par
 import TXT_Reader     as tr
 import EMA_Calculator as ema
 
 
 class ATR_Calculator:
 
+
     def __init__(self):
+
 
         pass
         
